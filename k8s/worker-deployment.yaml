@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Name of the deployment
+  name: worker-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: worker
+  template:
+    metadata:
+      # Define label into the template ( futur pod(s) )
+      labels:
+        component: worker
+    spec:
+      containers:
+        - name: worker
+          image: ccazin/multi-worker
+          env:
+            - name: REDIS_HOST
+              value: redis-cluster-ip-service
+            - name: REDIS_PORT
+              value: '6379'
+
