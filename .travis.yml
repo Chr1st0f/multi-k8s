@@ -41,7 +41,6 @@ deploy:
   on:
     branch: master
 
-# after_success:
  
 
 
