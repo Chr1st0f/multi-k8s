@@ -4,6 +4,12 @@ sudo: required
 services:
   - docker
 
+env:
+  global:
+    # Get the current SHA version of git to store in SHA variable and use after
+    - SHA=$(git rev-parse HEAD)
+    # No outputs on the gcloud CLI
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 # Create a test container into ./client context ( last field ) 
 before_install:
   # Decrypt the service-account.json file 
@@ -13,44 +19,30 @@ before_install:
   - source $HOME/google-cloud-sdk/path.bash.inc
   # Install and Update kubernetes inside travis environment
   - gcloud components update kubectl
-  # Activate service account to access to google cloud
+  # Activate service account to access to google cloud ( file service-account.json has been unencrypted before )
   - gcloud auth activate-service-account --key-file service-account.json
-
-
-
-
+  # Select the gcloud project
+  - gcloud config set project multi-k8s-243408
+  Select the gcloud compute zone 
+  - gcloud config set compute/zone us-central1-a
+  # Select the gcloud cluster to work with
+  - gcloud container clusters get-credentials multi-cluster
+  # Log in to the docker Hub CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker build -t ccazin/react-test -f ./client/Dockerfile.dev ./client
 
 # The script has to return 0 to validate test 
 script:
   - docker run ccazin/react-test npm run test -- --coverage
 
-after_success:
-  - docker build -t ccazin/multi-client ./client
-  - docker build -t ccazin/multi-nginx ./nginx
-  - docker build -t ccazin/multi-server ./server
-  - docker build -t ccazin/multi-worker ./worker
-
-  # Log in to the docker CLI
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-
-  # Take those images and push them to docker hub
-  - docker push ccazin/multi-client
-  - docker push ccazin/multi-nginx
-  - docker push ccazin/multi-server
-  - docker push ccazin/multi-worker
-
-  # Deployment on AWS
 deploy:
-  provider: elasticbeanstalk
-  region: "us-east-2"  
-  app: "multi-docker"
-  env: "MultiDocker-env"
-  bucket_name: "elasticbeanstalk-us-east-2-457357339164"
-  bucket_path: "docker-multi"
+  provider: script
+  script: bash ./deploy.sh
   on:
     branch: master
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key:
-    secure: "$AWS_SECRET_KEY"
+
+# after_success:
+ 
+
+
 
