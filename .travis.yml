@@ -23,16 +23,16 @@ before_install:
   - gcloud auth activate-service-account --key-file ./.keys/service-account2.json
   # Select the gcloud project / compute zone  / cluster to use
   - gcloud config set project multi-k8s-243408
-  # - gcloud config set compute/zone s-central1-a
-  # - gcloud container clusters get-credentials multi-cluster
+  - gcloud config set compute/zone s-central1-a
+  - gcloud container clusters get-credentials multi-cluster
   
   # Log in to the docker Hub CLI
-  # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  # - docker build -t ccazin/react-test -f ./client/Dockerfile.dev ./client
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t ccazin/react-test -f ./client/Dockerfile.dev ./client
 
 # The script has to return 0 to validate test 
-# script:
-#   - docker run ccazin/react-test npm run test -- --coverage
+script:
+  - docker run ccazin/react-test npm run test -- --coverage
 
 # deploy:
 #   # Just to launch a script ( not a cloud provider )
