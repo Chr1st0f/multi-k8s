@@ -6,9 +6,9 @@ services:
 
 env:
   global:
-    # Get the current SHA version of git to store in SHA variable and use after
+    # Get the current SHA version of git to store in SHA variable. Global variable 
     - SHA=$(git rev-parse HEAD)
-    # No outputs on the gcloud CLI
+    # To not display any prompt on the gcloud CLI
     - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 # Create a test container into ./client context ( last field ) 
 before_install:
@@ -21,12 +21,11 @@ before_install:
   - gcloud components update kubectl
   # Activate service account to access to google cloud ( file service-account.json has been unencrypted before )
   - gcloud auth activate-service-account --key-file service-account.json
-  # Select the gcloud project
+  # Select the gcloud project / compute zone  / cluster to use
   - gcloud config set project multi-k8s-243408
-  # Select the gcloud compute zone 
-  - gcloud config set compute/zone us-central1-a
-  # Select the gcloud cluster to work with
+  - gcloud config set compute/zone s-central1-a
   - gcloud container clusters get-credentials multi-cluster
+  
   # Log in to the docker Hub CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker build -t ccazin/react-test -f ./client/Dockerfile.dev ./client
@@ -35,11 +34,12 @@ before_install:
 script:
   - docker run ccazin/react-test npm run test -- --coverage
 
-deploy:
-  provider: script
-  script: bash ./deploy.sh
-  on:
-    branch: master
+# deploy:
+#   # Just to launch a script ( not a cloud provider )
+#   provider: script
+#   script: bash ./deploy.sh
+#   on:
+#     branch: master
 
  
 
