@@ -22,7 +22,7 @@ before_install:
   # Activate service account to access to google cloud ( file service-account.json has been unencrypted before )
   - gcloud auth activate-service-account --key-file ./.keys/service-account.json
   # Select the gcloud project / compute zone  / cluster to use
-  - gcloud config set project multi-k8s-243408xx
+  - gcloud config set project multi-k8s-243408
   # - gcloud config set compute/zone s-central1-a
   # - gcloud container clusters get-credentials multi-cluster
   
