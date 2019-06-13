@@ -13,14 +13,14 @@ env:
 # Create a test container into ./client context ( last field ) 
 before_install:
   # Decrypt the service-account.json file 
-  - openssl aes-256-cbc -K $encrypted_0c35eebf403c_key -iv $encrypted_0c35eebf403c_iv -in service-account.json.enc -out service-account.json -d
+  # - openssl aes-256-cbc -K $encrypted_0c35eebf403c_key -iv $encrypted_0c35eebf403c_iv -in service-account.json.enc -out service-account.json -d
   # Install the Google cloud SDK
   - curl https://sdk.cloud.google.com | bash > /dev/null;
   - source $HOME/google-cloud-sdk/path.bash.inc
   # Install and Update kubernetes inside travis environment
   - gcloud components update kubectl
   # Activate service account to access to google cloud ( file service-account.json has been unencrypted before )
-  - gcloud auth activate-service-account --key-file service-account.json
+  - gcloud auth activate-service-account --key-file ./.keys/service-account.json
   # Select the gcloud project / compute zone  / cluster to use
   - gcloud config set project multi-k8s-243408
   # - gcloud config set compute/zone s-central1-a
