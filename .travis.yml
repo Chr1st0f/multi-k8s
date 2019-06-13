@@ -23,7 +23,7 @@ before_install:
   - gcloud auth activate-service-account --key-file ./.keys/service-account2.json
   # Select the gcloud project / compute zone  / cluster to use
   - gcloud config set project multi-k8s-243408
-  - gcloud config set compute/zone s-central1-a
+  - gcloud config set compute/zone us-central1-a
   - gcloud container clusters get-credentials multi-cluster
   
   # Log in to the docker Hub CLI
