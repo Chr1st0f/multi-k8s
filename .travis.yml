@@ -20,7 +20,7 @@ before_install:
   # Install and Update kubernetes inside travis environment
   - gcloud components update kubectl
   # Activate service account to access to google cloud ( file service-account.json has been unencrypted before )
-  # - gcloud auth activate-service-account --key-file service-account.json
+  - gcloud auth activate-service-account --key-file service-account.json
   # Select the gcloud project / compute zone  / cluster to use
   - gcloud config set project multi-k8s-243408
   # - gcloud config set compute/zone s-central1-a
