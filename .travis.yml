@@ -20,19 +20,19 @@ before_install:
   # Install and Update kubernetes inside travis environment
   - gcloud components update kubectl
   # Activate service account to access to google cloud ( file service-account.json has been unencrypted before )
-  - gcloud auth activate-service-account --key-file service-account.json
+  # - gcloud auth activate-service-account --key-file service-account.json
   # Select the gcloud project / compute zone  / cluster to use
   - gcloud config set project multi-k8s-243408
-  - gcloud config set compute/zone s-central1-a
-  - gcloud container clusters get-credentials multi-cluster
+  # - gcloud config set compute/zone s-central1-a
+  # - gcloud container clusters get-credentials multi-cluster
   
   # Log in to the docker Hub CLI
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker build -t ccazin/react-test -f ./client/Dockerfile.dev ./client
+  # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  # - docker build -t ccazin/react-test -f ./client/Dockerfile.dev ./client
 
 # The script has to return 0 to validate test 
-script:
-  - docker run ccazin/react-test npm run test -- --coverage
+# script:
+#   - docker run ccazin/react-test npm run test -- --coverage
 
 # deploy:
 #   # Just to launch a script ( not a cloud provider )
