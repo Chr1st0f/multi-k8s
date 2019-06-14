@@ -34,12 +34,12 @@ before_install:
 script:
   - docker run ccazin/react-test npm run test -- --coverage
 
-# deploy:
-#   # Just to launch a script ( not a cloud provider )
-#   provider: script
-#   script: bash ./deploy.sh
-#   on:
-#     branch: master
+deploy:
+  # Just to launch a script ( not a cloud provider )
+  provider: script
+  script: bash ./deploy.sh
+  on:
+    branch: master
 
  
 
