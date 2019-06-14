@@ -12,9 +12,9 @@ docker push ccazin/multi-client:$SHA
 docker push ccazin/multi-server:$SHA
 docker push ccazin/multi-worker:$SHA
 
-# kubectl apply -f k8s
-# # Change the name of image into the deployments on k8s directory with the name with SHA to get the right image 
-# # So second build for these images ( if there is modifications )
-# kubectl set image deployments/server-deployment server=ccazin/multi-server:$SHA
-# kubectl set image deployments/client-deployment client=ccazin/multi-client:$SHA
-# kubectl set image deployments/worker-deployment worker=ccazin/multi-worker:$SHA
+kubectl apply -f k8s
+# Change the name of image into the deployments on k8s directory with the name with SHA to get the right image 
+# So second build for these images ( if there is modifications )
+kubectl set image deployments/server-deployment server=ccazin/multi-server:$SHA
+kubectl set image deployments/client-deployment client=ccazin/multi-client:$SHA
+kubectl set image deployments/worker-deployment worker=ccazin/multi-worker:$SHA
